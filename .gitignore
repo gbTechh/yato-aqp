@@ -1,1 +1,15 @@
+# Aider
 .aider*
+
+# Dependencias (Cualquier node_modules en cualquier subcarpeta)
+**/node_modules/
+
+# Compilación y temporales
+dist/
+build/
+.DS_Store
+*.log
+
+# WordPress específico (opcional pero recomendado)
+wp-config.php
+.htaccess
