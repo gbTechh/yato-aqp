@@ -26,7 +26,7 @@ if (have_posts()):
         <section
           class="flex flex-col pt-10 px-5 py-20 hd:p-20 items-center justify-center relative gap-4 bg-gradient-to-br from-white via-gray-50 to-bg-primary/5">
           <div class="relative">
-            <img src="<?= $group["imagen"]["url"] ?>" class="rounded-2xl min-h-[150px] object-cover">
+            <img src="<?= $group["imagen"]["url"] ?>" class="rounded-2xl min-h-[150px] object-cover aspect-[16/8]" alt="<?= $group["imagen"]["alt"] ?>">
             <div
               class="md:flex bg-bg-primary absolute -left-[10px] hd:-left-10 -bottom-10 rounded-2xl hidden flex-col p-8 max-w-[350px] xl:aspect-square items-left justify-center gap-8">
               <div>
