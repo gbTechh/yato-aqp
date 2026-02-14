@@ -5,7 +5,7 @@ services:
     ports:
       - "80"
     volumes:
-      - wordpress-files:/var/www/html
+      - wordpress-data-v2:/var/www/html
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: wordpress
@@ -17,7 +17,7 @@ services:
   mariadb:
     image: mariadb:11
     volumes:
-      - mariadb-data:/var/lib/mysql
+      - mariadb-data-v2:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: wordpress
@@ -25,5 +25,5 @@ services:
       MYSQL_PASSWORD: password
 
 volumes:
-  wordpress-files:
-  mariadb-data:
+  wordpress-data-v2:
+  mariadb-data-v2:
