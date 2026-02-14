@@ -5,6 +5,7 @@ services:
     ports:
       - "80"
     volumes:
+      - wordpress-files:/var/www/html
       - ./themes/yato-theme:/var/www/html/wp-content/themes/yato-theme
       - ./plugins/yato_postypes:/var/www/html/wp-content/plugins/yato_postypes
     environment:
@@ -26,4 +27,5 @@ services:
       MYSQL_PASSWORD: password
 
 volumes:
+  wordpress-files:
   mariadb-data:
