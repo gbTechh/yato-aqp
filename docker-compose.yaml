@@ -6,8 +6,8 @@ services:
       - "80"
     volumes:
       - wordpress-files:/var/www/html
-      - ./themes/yato-theme:/var/www/html/wp-content/themes/yato-theme
-      - ./plugins/yato_postypes:/var/www/html/wp-content/plugins/yato_postypes
+      - /data/coolify/applications/g4040c8ckog0sw4kccgsswss/themes/yato-theme:/var/www/html/wp-content/themes/yato-theme
+      - /data/coolify/applications/g4040c8ckog0sw4kccgsswss/plugins/yato_postypes:/var/www/html/wp-content/plugins/yato_postypes
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: wordpress
