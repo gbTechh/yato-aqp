@@ -209,7 +209,7 @@
                     </div>
                     <p class="text-white text-sm mt-4 font-medium drop-shadow">
                         &copy; <?php echo date('Y'); ?> <?php echo esc_html(get_option('company_name', 'Yato')); ?>.
-                        Todos los derechos reservados. Yato
+                        Todos los derechos reservados
                     </p>
                 </div>
             </div>
