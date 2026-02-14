@@ -6,80 +6,86 @@
         <!-- Sección principal del footer -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
             <!-- Columna izquierda: Logo, descripción y contacto -->
-            <div class="space-y-8">
+            <div class="space-y-0 relative">
                 <!-- Logo y nombre de la empresa -->
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4 absolute -top-10 left-10 z-10">
                     <?php
                     $logo = get_theme_mod('custom_logo');
                     if ($logo):
                         $logo_url = wp_get_attachment_url($logo);
                         ?>
-                        <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/20 shadow-lg">
+                        <div class="bg-white/10 backdrop-blur-sm p-4 rounded-2xl border  shadow-lg">
                             <img src="<?php echo esc_url($logo_url); ?>" alt="<?php bloginfo('name'); ?>"
-                                class="h-20 w-auto object-contain">
+                                class="h-16 w-auto object-contain">
                         </div>
                     <?php endif; ?>
                 </div>
 
                 <!-- Descripción -->
-                <div class="bg-white/10 backdrop-blur-sm p-6 rounded-2xl border border-white/20 shadow-xl">
-                    <p class="text-white text-lg leading-relaxed max-w-2xl font-light">
-                        <?php echo esc_html(get_option('yato_description', 'Somos una empresa comprometida con ofrecer soluciones innovadoras y de calidad para nuestros clientes.')); ?>
-                    </p>
-                </div>
-
-                <!-- Información de contacto -->
-                <div class="space-y-4">
-                    <h4 class="text-2xl font-bold text-white mb-6 drop-shadow-lg">Contacto</h4>
-                    <div class="space-y-4">
-                        <div
-                            class="flex items-center gap-4 bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-                            <div class="bg-yellow-400 p-3 rounded-full">
-                                <svg class="w-5 h-5 text-white flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <p class="text-white font-medium">
-                                <?php echo esc_html(get_option('yato_contact_address', 'Av. Principal 123, Arequipa, Perú')); ?>
-                            </p>
-                        </div>
-                        <div
-                            class="flex items-center gap-4 bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-                            <div class="bg-yellow-400 p-3 rounded-full">
-                                <svg class="w-5 h-5 text-white flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                            <a href="tel:<?php echo esc_attr(get_option('yato_contact_phone', '+123 456 789')); ?>"
-                                class="text-white font-medium hover:text-yellow-300 transition-colors">
-                                <?php echo "+51 " . esc_html(get_option('yato_contact_phone', '+123 456 789')); ?>
-                            </a>
-                        </div>
-                        <div
-                            class="flex items-center gap-4 bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
-                            <div class="bg-yellow-400 p-3 rounded-full">
-                                <svg class="w-5 h-5 text-white flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                </svg>
-                            </div>
-                            <a href="mailto:<?php echo esc_attr(get_option('yato_contact_email', 'info@yato.com')); ?>"
-                                class="text-white font-medium hover:text-yellow-300 transition-colors break-all">
-                                <?php echo esc_html(get_option('yato_contact_email', 'info@yato.com')); ?>
-                            </a>
-                        </div>
+                <div class=" rounded-2xl overflow-hidden bg-white/10 backdrop-blur-sm p-4 ">
+                    <div class="bg-white backdrop-blur-sm p-6  border  shadow-xl rounded-t-2xl pt-16">
+                        <h4 class="text-green-600 font-bold mb-3 drop-shadow-lg">Fabricamos Implementos Agrícolas</h4>
+                        <hr class="bg-bg-primary mb-3 h-1 w-20">
+                        <p class=" text-lg leading-relaxed max-w-2xl font-light">
+                            <?php echo esc_html(get_option('yato_description', 'Fabricamos implementos agrícolas de alta resistencia para el mercado peruano')); ?>
+                        </p>
                     </div>
+
+                    <!-- Información de contacto -->
+                    <div class=" bg-white backdrop-blur-sm p-6  border  shadow-xl rounded-b-2xl">
+                        <h4 class="text-green-600 font-bold mb-3| drop-shadow-lg">Contacto</h4>
+                        <hr class="bg-bg-primary mb-3 h-1 w-20">
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center gap-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
+                                <div class="bg-bg-primary p-3 rounded-full">
+                                    <svg class="w-5 h-5 text-white flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <p class=" font-medium">
+                                    <?php echo esc_html(get_option('yato_contact_address', 'Av. Principal 123, Arequipa, Perú')); ?>
+                                </p>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
+                                <div class="bg-bg-primary p-3 rounded-full">
+                                    <svg class="w-5 h-5 text-white flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <a href="tel:<?php echo esc_attr(get_option('yato_contact_phone', '+123 456 789')); ?>"
+                                    class=" font-medium hover:text-yellow-300 transition-colors">
+                                    <?php echo "+51 " . esc_html(get_option('yato_contact_phone', '+123 456 789')); ?>
+                                </a>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300">
+                                <div class="bg-bg-primary p-3 rounded-full">
+                                    <svg class="w-5 h-5 text-white flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                    </svg>
+                                </div>
+                                <a href="mailto:<?php echo esc_attr(get_option('yato_contact_email', 'info@yato.com')); ?>"
+                                    class=" font-medium hover:text-yellow-300 transition-colors break-all">
+                                    <?php echo esc_html(get_option('yato_contact_email', 'info@yato.com')); ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>             
                 </div>
+                
             </div>
 
             <!-- Columna derecha: Mapa y enlaces rápidos -->
             <div class="space-y-8">
                 <!-- Mapa -->
-                <div>
+                <div class="bg-transparent  ">
                     <h4 class="text-2xl font-bold text-white mb-6 drop-shadow-lg">Nuestra Ubicación</h4>
                     <div class="bg-bg-primarydark rounded-xl overflow-hidden shadow-2xl border border-white/10">
                         <div class="h-64 md:h-72">
@@ -90,7 +96,7 @@
                                 title="Ubicación de Yato en Google Maps">
                             </iframe>
                         </div>
-                        <div class="p-4 bg-bg-primarydark border-t border-white/10">
+                        <div class="p-4 bg-bg-primary border-t border-white/10">
                             <p class="text-white text-sm font-medium">
                                 <?php echo esc_html(get_option('yato_contact_address', 'Av. Principal 123, Arequipa, Perú')); ?>
                             </p>
@@ -107,7 +113,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <!-- Redes sociales -->
                 <div>
-                    <h5 class="text-white text-base font-bold mb-4 drop-shadow-lg">Síguenos en redes sociales</h5>
+                    <h5 class="text-white text-base font-bold mb-4 drop-shadow-lg text-center md:text-left">Síguenos en redes sociales</h5>
                     <div class="flex gap-4">
                         <?php if (get_option('yato_social_facebook')): ?>
                             <a href="<?php echo esc_url(get_option('yato_social_facebook')); ?>" target="_blank"
