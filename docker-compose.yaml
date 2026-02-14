@@ -1,11 +1,13 @@
 version: '3.8'
 services:
   wordpress:
-    build: . 
+    build: .
     ports:
       - "80"
     volumes:
       - wordpress-data-v2:/var/www/html
+      - ./themes/yato-theme:/var/www/html/wp-content/themes/yato-theme
+      - ./plugins/yato_postypes:/var/www/html/wp-content/plugins/yato_postypes
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: wordpress
