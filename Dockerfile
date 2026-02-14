@@ -1,9 +1,6 @@
 FROM wordpress:latest
 
-# Copiamos tus carpetas
-COPY ./themes/yato-theme /var/www/html/wp-content/themes/yato-theme
-COPY ./plugins/yato_postypes /var/www/html/wp-content/plugins/yato_postypes
-
-# EL CAMBIO CLAVE: Le damos permiso a WordPress sobre TODO wp-content
-# Así podrá crear carpetas en uploads, upgrades y plugins sin llorar.
-RUN chown -R www-data:www-data /var/www/html/wp-content
+# 1. Copiamos tu código a una carpeta "segura" fuera del volumen
+# No lo ponemos en /var/www/html todavía porque el volumen lo taparía.
+COPY ./themes/yato-theme /usr/src/yato-code/themes/yato-theme
+COPY ./plugins/yato_postypes /usr/src/yato-code/plugins/yato_postypes

@@ -5,7 +5,7 @@ services:
     ports:
       - "80"
     volumes:
-      - wordpress-uploads:/var/www/html/wp-content/uploads
+      - wordpress-data-final:/var/www/html
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: wordpress
@@ -13,11 +13,22 @@ services:
       WORDPRESS_DB_NAME: wordpress
     depends_on:
       - mariadb
+    # COMANDO MÁGICO:
+    # 1. Copia tu tema actualizado desde la carpeta segura a la carpeta viva.
+    # 2. Copia tu plugin actualizado.
+    # 3. Ajusta permisos.
+    # 4. Arranca WordPress normalmente.
+    command: >
+      sh -c "cp -r /usr/src/yato-code/themes/* /var/www/html/wp-content/themes/ &&
+             cp -r /usr/src/yato-code/plugins/* /var/www/html/wp-content/plugins/ &&
+             chown -R www-data:www-data /var/www/html/wp-content &&
+             docker-entrypoint.sh apache2-foreground"
 
   mariadb:
     image: mariadb:11
     volumes:
-      - mariadb-data-v2:/var/lib/mysql
+      # Base de datos segura
+      - mariadb-data-final:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_DATABASE: wordpress
@@ -25,5 +36,5 @@ services:
       MYSQL_PASSWORD: password
 
 volumes:
-  wordpress-uploads:
-  mariadb-data-v2:
+  wordpress-data-final: # Volumen definitivo
+  mariadb-data-final:   # Volumen definitivo
