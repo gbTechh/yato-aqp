@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <!-- Divider -->
+        <!-- Dividerr -->
         <div class="border-t border-white/20 pt-8 mt-8">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <!-- Redes sociales -->
