@@ -1000,10 +1000,6 @@ body {
   top: 1.5rem;
 }
 
-.right-20 {
-  right: 5rem;
-}
-
 .-z-10 {
   z-index: -10;
 }
@@ -1340,12 +1336,12 @@ body {
   height: 16rem;
 }
 
-.h-7 {
-  height: 1.75rem;
-}
-
 .h-8 {
   height: 2rem;
+}
+
+.h-9 {
+  height: 2.25rem;
 }
 
 .h-\[200px\] {
@@ -1524,12 +1520,12 @@ body {
   width: 16rem;
 }
 
-.w-7 {
-  width: 1.75rem;
-}
-
 .w-8 {
   width: 2rem;
+}
+
+.w-9 {
+  width: 2.25rem;
 }
 
 .w-\[200px\] {
@@ -3760,6 +3756,11 @@ body {
 
 .header-shadow{
   box-shadow: inset -10px 6px 50px 5px rgba(40, 114, 64, 0.2);
+}
+
+.whatsapp {
+  width: 78px;
+  height: 78px;
 }
 
 .after\:\!text-lg::after {

@@ -482,3 +482,8 @@ filter: grayscale(69%) sepia(28%) saturate(162%) contrast(91%);
 .header-shadow{
   box-shadow: inset -10px 6px 50px 5px rgba(40, 114, 64, 0.2);
 }
+
+.whatsapp {
+  width: 78px;
+  height: 78px;
+}
