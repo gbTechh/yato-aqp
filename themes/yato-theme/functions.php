@@ -369,6 +369,7 @@ function yato_register_settings()
     register_setting('yato_options', 'yato_contact_email');
     register_setting('yato_options', 'yato_contact_whatsapp');
     register_setting('yato_options', 'yato_contact_address');
+    register_setting('yato_options', 'yato_whatsapp_message');
 }
 add_action('admin_init', 'yato_register_settings');
 
@@ -433,6 +434,15 @@ function yato_theme_options_page_html()
                     <td>
                         <input type="tel" name="yato_contact_whatsapp"
                             value="<?php echo esc_attr(get_option('yato_contact_whatsapp')); ?>" class="regular-text">
+                        <p class="description">Número con código de país, sin + ni espacios. Ej: 51987654321</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Mensaje de WhatsApp</th>
+                    <td>
+                        <textarea name="yato_whatsapp_message" rows="3"
+                            class="regular-text"><?php echo esc_textarea(get_option('yato_whatsapp_message', '¡Hola! Me gustaría obtener más información.')); ?></textarea>
+                        <p class="description">Este mensaje aparecerá pre-escrito cuando el visitante haga clic en el botón flotante de WhatsApp.</p>
                     </td>
                 </tr>
                 <tr>
