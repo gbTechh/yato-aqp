@@ -4,10 +4,7 @@
   <!-- Fondo sutil con gradiente -->
   <div class="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white"></div>
 
-  <!-- Elementos decorativos -->
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-1 bg-gradient-to-r from-transparent via-gray-300/30 to-transparent"></div>
-  <div class="absolute -bottom-10 right-10 w-32 h-32 rounded-full bg-bg-primary/5 blur-2xl"></div>
-
+ 
   <div class="max-w-7xl mx-auto relative z-10">
     <!-- Header de sección -->
     <div class="text-center mb-12 hd:mb-16">

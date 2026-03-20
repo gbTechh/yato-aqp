@@ -108,10 +108,19 @@ if (have_posts()) :
                 ];
                 $shade = $index % 3 === 0 ? $greenShades['light'] : ($index % 3 === 1 ? $greenShades['medium'] : $greenShades['dark']);
                 $shade = $greenShades['light'];
+                $category_link = get_term_link($category->id, 'categoria_producto');
+                if (is_wp_error($category_link)) {
+                  $category_link = '#';
+                }
               ?>
-                <div class="group relative h-full">
+                <div class="group relative h-full cursor-pointer">
                   <!-- Card principal -->
-                  <div class="relative h-full bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-green-100">
+                  <div class="relative h-full bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-green-100"
+                    role="link"
+                    tabindex="0"
+                    aria-label="Ver productos de <?php echo esc_attr($category->name); ?>"
+                    onclick="window.location.href='<?php echo esc_url($category_link); ?>'"
+                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='<?php echo esc_url($category_link); ?>';}">
 
                     <!-- Fondo gradiente verde suave -->
                     <div class="absolute inset-0 bg-gradient-to-br <?= $shade ?> opacity-60"></div>
@@ -180,7 +189,7 @@ if (have_posts()) :
 
                     <!-- Botón -->
                     <div class="px-8 pb-8 pt-0">
-                      <a href="<?php echo get_term_link($category->id, 'categoria_producto'); ?>"
+                      <a href="<?php echo esc_url($category_link); ?>"
                         class="group/btn relative w-full flex items-center justify-between px-6 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-lg overflow-hidden">
 
                         <!-- Efecto de brillo -->

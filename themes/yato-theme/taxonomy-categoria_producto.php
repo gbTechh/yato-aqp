@@ -173,8 +173,84 @@ $category_image = get_field('imagen', 'categoria_producto_' . $current_category-
                         'hide_empty' => false,
                         'parent' => $current_category->term_id
                     ]);
+                    ?>
+                    <!-- Productos -->
+                    <div class="mb-12">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                            <div class="w-1 h-8 bg-gradient-to-b from-green-600 to-emerald-600 rounded-full"></div>
+                            Productos disponibles
+                        </h2>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                            <?php while ($query->have_posts()) : $query->the_post();
+                                $product_fields = get_fields(get_the_ID());
+                                $product_link = get_permalink();
+                            ?>
+                                <article class="group relative h-full cursor-pointer"
+                                    role="link"
+                                    tabindex="0"
+                                    aria-label="Ver detalles de <?php echo esc_attr(get_the_title()); ?>"
+                                    onclick="window.location.href='<?php echo esc_url($product_link); ?>'"
+                                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='<?php echo esc_url($product_link); ?>';}">
+                                    <div class="relative h-full bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-green-100 flex flex-col">
 
-                    // Si hay subcategorías, mostrar cards de subcategorías
+                                        <!-- Fondo gradiente verde suave -->
+                                        <div class="absolute inset-0 bg-gradient-to-br from-green-50/50 to-green-50 opacity-60"></div>
+
+                                        <!-- Patrón de puntos decorativo -->
+                                        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#059669 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+                                        <!-- Imagen del producto -->
+                                        <?php if (has_post_thumbnail()) : ?>
+                                            <div class="relative bg-gradient-to-br from-green-50 to-emerald-50 p-6 overflow-hidden">
+                                                <div class="relative aspect-square">
+                                                    <?php the_post_thumbnail('medium', [
+                                                        'class' => 'w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500'
+                                                    ]); ?>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+
+                                        <!-- Contenido -->
+                                        <div class="relative p-6 flex flex-col flex-grow">
+                                            <h3 class="text-base font-bold text-gray-800 group-hover:text-green-700 transition-colors duration-300 mb-3 line-clamp-2">
+                                                <?php the_title(); ?>
+                                            </h3>
+
+                                            <?php if (get_field('descripcion_corta')) : ?>
+                                                <p class="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
+                                                    <?php echo get_field('descripcion_corta'); ?>
+                                                </p>
+                                            <?php endif; ?>
+
+                                            <a href="<?php echo esc_url($product_link); ?>"
+                                                class="group/btn relative w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-lg overflow-hidden text-sm mt-auto">
+
+                                                <!-- Efecto de brillo -->
+                                                <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700"></div>
+
+                                                <span class="relative text-white">Ver detalles</span>
+
+                                                <svg class="w-4 h-4 ml-2 relative transform group-hover/btn:translate-x-1 transition-transform duration-300"
+                                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </a>
+                                        </div>
+
+                                        <!-- Esquina decorativa -->
+                                        <div class="absolute top-0 right-0 w-20 h-20 overflow-hidden">
+                                            <div class="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-green-400/20 to-emerald-400/20 rounded-full"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Sombra verde al hover -->
+                                    <div class="absolute -inset-3 bg-gradient-to-r from-green-100 to-emerald-100 rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 -z-10"></div>
+                                </article>
+                            <?php endwhile; ?>
+                        </div>
+                    </div>
+
+                    <?php // Si hay subcategorías, mostrar cards de subcategorías
                     if (!empty($subcategories)) : ?>
                         <div class="mb-12">
                             <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
@@ -231,75 +307,7 @@ $category_image = get_field('imagen', 'categoria_producto_' . $current_category-
                         </div>
                     <?php endif; ?>
 
-                    <!-- Productos -->
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                            <div class="w-1 h-8 bg-gradient-to-b from-green-600 to-emerald-600 rounded-full"></div>
-                            Productos disponibles
-                        </h2>
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-                            <?php while ($query->have_posts()) : $query->the_post();
-                                $product_fields = get_fields(get_the_ID());
-                            ?>
-                                <article class="group relative h-full">
-                                    <div class="relative h-full bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-green-100 flex flex-col">
-
-                                        <!-- Fondo gradiente verde suave -->
-                                        <div class="absolute inset-0 bg-gradient-to-br from-green-50/50 to-green-50 opacity-60"></div>
-
-                                        <!-- Patrón de puntos decorativo -->
-                                        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#059669 1px, transparent 1px); background-size: 20px 20px;"></div>
-
-                                        <!-- Imagen del producto -->
-                                        <?php if (has_post_thumbnail()) : ?>
-                                            <div class="relative bg-gradient-to-br from-green-50 to-emerald-50 p-6 overflow-hidden">
-                                                <div class="relative aspect-square">
-                                                    <?php the_post_thumbnail('medium', [
-                                                        'class' => 'w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500'
-                                                    ]); ?>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
-
-                                        <!-- Contenido -->
-                                        <div class="relative p-6 flex flex-col flex-grow">
-                                            <h3 class="text-base font-bold text-gray-800 group-hover:text-green-700 transition-colors duration-300 mb-3 line-clamp-2">
-                                                <?php the_title(); ?>
-                                            </h3>
-
-                                            <?php if (get_field('descripcion_corta')) : ?>
-                                                <p class="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
-                                                    <?php echo get_field('descripcion_corta'); ?>
-                                                </p>
-                                            <?php endif; ?>
-
-                                            <a href="<?php the_permalink(); ?>"
-                                                class="group/btn relative w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-lg overflow-hidden text-sm mt-auto">
-
-                                                <!-- Efecto de brillo -->
-                                                <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700"></div>
-
-                                                <span class="relative text-white">Ver detalles</span>
-
-                                                <svg class="w-4 h-4 ml-2 relative transform group-hover/btn:translate-x-1 transition-transform duration-300"
-                                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                                </svg>
-                                            </a>
-                                        </div>
-
-                                        <!-- Esquina decorativa -->
-                                        <div class="absolute top-0 right-0 w-20 h-20 overflow-hidden">
-                                            <div class="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-green-400/20 to-emerald-400/20 rounded-full"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Sombra verde al hover -->
-                                    <div class="absolute -inset-3 bg-gradient-to-r from-green-100 to-emerald-100 rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 -z-10"></div>
-                                </article>
-                            <?php endwhile; ?>
-                        </div>
-                    </div>
+                    
 
                 <?php
                     wp_reset_postdata();

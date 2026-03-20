@@ -12,58 +12,84 @@ add_action('after_setup_theme', 'yato_support');
 
 function yato_styles()
 {
-    // Estilos
-    // Estilos
-    wp_enqueue_style('style', get_stylesheet_uri(), array(), '1.0.0');
-    wp_enqueue_style('swiper', 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css');
-    wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js', array(), null, true);
-    wp_enqueue_script('categories-slider', get_template_directory_uri() . '/assets/js/categories-slider.js', array('swiper'), '1.0.0', true);
-    wp_enqueue_script('app-scripts', get_template_directory_uri() . '/assets/js/app.js', array('jquery'), '1.0.0', true);
-    wp_register_script('home', get_template_directory_uri() . '/assets/js/home.js', array('swiper'), '1.0.0', true);
-    // Registrar y encolar scripts principales
+    $theme_version = wp_get_theme()->get('Version');
+    $style_path = get_template_directory() . '/style.css';
+    $style_version = file_exists($style_path) ? (string) filemtime($style_path) : $theme_version;
+
+    wp_enqueue_style('style', get_stylesheet_uri(), array(), $style_version);
+
+    $swiper_needed = is_front_page();
+    if ($swiper_needed) {
+        wp_enqueue_style('swiper', 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css', array(), null);
+        wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js', array(), null, true);
+        wp_script_add_data('swiper', 'strategy', 'defer');
+    }
+
+    $categories_slider_path = get_template_directory() . '/assets/js/categories-slider.js';
+    $categories_slider_version = file_exists($categories_slider_path) ? (string) filemtime($categories_slider_path) : $theme_version;
+    if ($swiper_needed) {
+        wp_enqueue_script('categories-slider', get_template_directory_uri() . '/assets/js/categories-slider.js', array('swiper'), $categories_slider_version, true);
+        wp_script_add_data('categories-slider', 'strategy', 'defer');
+    }
+
+    $app_script_path = get_template_directory() . '/assets/js/app.js';
+    $app_script_version = file_exists($app_script_path) ? (string) filemtime($app_script_path) : $theme_version;
+    wp_enqueue_script('app-scripts', get_template_directory_uri() . '/assets/js/app.js', array(), $app_script_version, true);
+    wp_script_add_data('app-scripts', 'strategy', 'defer');
+
+    $home_script_path = get_template_directory() . '/assets/js/home.js';
+    $home_script_version = file_exists($home_script_path) ? (string) filemtime($home_script_path) : $theme_version;
+    wp_register_script('home', get_template_directory_uri() . '/assets/js/home.js', array('swiper'), $home_script_version, true);
+    wp_script_add_data('home', 'strategy', 'defer');
+
     wp_register_script(
         'formHandler',
         get_template_directory_uri() . '/assets/js/formHandler.js',
         array(),
-        '1.0.0',
+        $theme_version,
         true
     );
     wp_script_add_data('formHandler', 'type', 'module');
+    wp_script_add_data('formHandler', 'strategy', 'defer');
 
     // Registrar carrusel
     wp_register_script(
         'carrusel',
         get_template_directory_uri() . '/assets/js/carrusel.js',
-        array(), // Quitamos la dependencia circular
-        '1.0.0',
+        array(),
+        $theme_version,
         true
     );
     wp_script_add_data('carrusel', 'type', 'module');
+    wp_script_add_data('carrusel', 'strategy', 'defer');
 
     wp_register_script(
         'contact',
-        get_template_directory_uri() . '/js/contact.js',
+        get_template_directory_uri() . '/assets/js/contact.js',
         array('formHandler'),
-        '1.0.0',
+        $theme_version,
         true
     );
     wp_script_add_data('contact', 'type', 'module');
+    wp_script_add_data('contact', 'strategy', 'defer');
     wp_register_script(
         'map',
-        get_template_directory_uri() . '/js/contact.js',
-        array('jquery'),
-        '1.0.0',
+        get_template_directory_uri() . '/assets/js/page-contact.js',
+        array('jquery', 'google-maps'),
+        $theme_version,
         true
     );
     wp_script_add_data('map', 'type', 'module');
+    wp_script_add_data('map', 'strategy', 'defer');
 
     wp_register_script(
         'services-slider',
         get_template_directory_uri() . '/assets/js/services-slider.js',
         array('swiper'),
-        '1.0.0',
+        $theme_version,
         true
     );
+    wp_script_add_data('services-slider', 'strategy', 'defer');
 
 
     if (is_front_page()) {
@@ -84,6 +110,98 @@ function yato_styles()
     }
 }
 add_action('wp_enqueue_scripts', 'yato_styles');
+
+function yato_optimize_frontend_runtime()
+{
+    if (is_admin()) {
+        return;
+    }
+
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    wp_deregister_script('wp-embed');
+
+    if (!is_user_logged_in()) {
+        wp_deregister_style('dashicons');
+    }
+}
+add_action('wp_enqueue_scripts', 'yato_optimize_frontend_runtime', 100);
+
+function yato_optimize_attachment_image_attributes($attr)
+{
+    if (is_admin()) {
+        return $attr;
+    }
+
+    if (empty($attr['decoding'])) {
+        $attr['decoding'] = 'async';
+    }
+
+    if (empty($attr['loading'])) {
+        $attr['loading'] = 'lazy';
+    }
+
+    static $is_first_image = true;
+    if ($is_first_image && is_front_page()) {
+        $attr['loading'] = 'eager';
+        $attr['fetchpriority'] = 'high';
+        $is_first_image = false;
+    }
+
+    return $attr;
+}
+add_filter('wp_get_attachment_image_attributes', 'yato_optimize_attachment_image_attributes', 10, 3);
+
+function yato_add_resource_hints($hints, $relation_type)
+{
+    if ('preconnect' === $relation_type) {
+        $hints[] = 'https://cdn.jsdelivr.net';
+        $hints[] = 'https://fonts.googleapis.com';
+        $hints[] = 'https://fonts.gstatic.com';
+    }
+
+    return array_unique($hints);
+}
+add_filter('wp_resource_hints', 'yato_add_resource_hints', 10, 2);
+
+function yato_optimize_img_tag_markup($html)
+{
+    if (is_admin() || trim($html) === '') {
+        return $html;
+    }
+
+    $image_index = 0;
+
+    return preg_replace_callback('/<img\b[^>]*>/i', function ($matches) use (&$image_index) {
+        $image_index++;
+        $img_tag = $matches[0];
+
+        if (stripos($img_tag, 'decoding=') === false) {
+            $img_tag = preg_replace('/\s*\/?\>$/', ' decoding="async"$0', $img_tag);
+        }
+
+        if (stripos($img_tag, 'loading=') === false) {
+            $loading = $image_index === 1 ? 'eager' : 'lazy';
+            $img_tag = preg_replace('/\s*\/?\>$/', ' loading="' . $loading . '"$0', $img_tag);
+        }
+
+        if ($image_index === 1 && stripos($img_tag, 'fetchpriority=') === false) {
+            $img_tag = preg_replace('/\s*\/?\>$/', ' fetchpriority="high"$0', $img_tag);
+        }
+
+        return $img_tag;
+    }, $html);
+}
+
+function yato_start_output_buffer_optimization()
+{
+    if (is_admin() || is_feed() || wp_doing_ajax() || (defined('REST_REQUEST') && REST_REQUEST)) {
+        return;
+    }
+
+    ob_start('yato_optimize_img_tag_markup');
+}
+add_action('template_redirect', 'yato_start_output_buffer_optimization');
 
 function yato_setup()
 {
@@ -370,6 +488,7 @@ function yato_register_settings()
     register_setting('yato_options', 'yato_contact_whatsapp');
     register_setting('yato_options', 'yato_contact_address');
     register_setting('yato_options', 'yato_whatsapp_message');
+    register_setting('yato_options', 'yato_google_maps_api_key');
 }
 add_action('admin_init', 'yato_register_settings');
 
@@ -453,6 +572,14 @@ function yato_theme_options_page_html()
                     </td>
                 </tr>
                 <tr>
+                    <th scope="row">Google Maps API Key</th>
+                    <td>
+                        <input type="text" name="yato_google_maps_api_key"
+                            value="<?php echo esc_attr(get_option('yato_google_maps_api_key')); ?>" class="regular-text">
+                        <p class="description">Se usa solo en la página de contacto para cargar el mapa.</p>
+                    </td>
+                </tr>
+                <tr>
                     <th scope="row">Dirección</th>
                     <td>
                         <textarea name="yato_contact_address" rows="3"
@@ -507,13 +634,27 @@ add_action('customize_register', 'tu_tema_customizer_settings');
 
 function cargar_api_google_maps()
 {
+    if (!is_page('contacto')) {
+        return;
+    }
+
+    $api_key = trim((string) get_option('yato_google_maps_api_key', ''));
+    if ($api_key === '') {
+        $api_key = trim((string) getenv('GOOGLE_MAPS_API_KEY'));
+    }
+
+    if ($api_key === '' || $api_key === 'TU_API_KEY') {
+        return;
+    }
+
     wp_enqueue_script(
         'google-maps',
-        'https://maps.googleapis.com/maps/api/js?key=TU_API_KEY',
+        'https://maps.googleapis.com/maps/api/js?key=' . rawurlencode($api_key),
         array(),
         null,
         true
     );
+    wp_script_add_data('google-maps', 'strategy', 'defer');
 }
 
 add_action('wp_enqueue_scripts', 'cargar_api_google_maps');

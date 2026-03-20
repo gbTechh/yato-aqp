@@ -278,36 +278,63 @@ while (have_posts()) :
                             <h2 class="subtitle !text-black !text-xl mb-0">Productos relacionados</h2>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 hd:grid-cols-3 gap-8">
-                            <?php while ($related_products->have_posts()) : $related_products->the_post(); ?>
-                                <a href="<?php the_permalink(); ?>" class="group block h-full">
-                                    <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col relative">
+                            <?php while ($related_products->have_posts()) : $related_products->the_post();
+                                $product_link = get_permalink();
+                            ?>
+                                <article class="group relative h-full cursor-pointer"
+                                    role="link"
+                                    tabindex="0"
+                                    aria-label="Ver detalles de <?php echo esc_attr(get_the_title()); ?>"
+                                    onclick="window.location.href='<?php echo esc_url($product_link); ?>'"
+                                    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.location.href='<?php echo esc_url($product_link); ?>';}">
+                                    <div class="relative h-full bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-green-100 flex flex-col">
+
+                                        <div class="absolute inset-0 bg-gradient-to-br from-green-50/50 to-green-50 opacity-60"></div>
+
+                                        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(#059669 1px, transparent 1px); background-size: 20px 20px;"></div>
+
                                         <?php if (has_post_thumbnail()) : ?>
-                                            <div class="w-full aspect-square flex items-center justify-center p-8 bg-gray-50 group-hover:bg-green-50/30 transition-colors duration-300 relative overflow-hidden">
-                                                <?php the_post_thumbnail('medium', ['class' => 'w-full h-auto max-h-full object-contain group-hover:scale-110 transition-transform duration-500']); ?>
-                                                
-                                                <!-- Overlay Action -->
-                                                <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                                    <span class="bg-white text-green-700 px-6 py-2 rounded-full font-semibold shadow-lg translate-y-4 group-hover:translate-y-0 transition-transform duration-300 text-sm flex items-center gap-2">
-                                                        Ver Detalles <i class='bx bx-right-arrow-alt'></i>
-                                                    </span>
+                                            <div class="relative bg-gradient-to-br from-green-50 to-emerald-50 p-6 overflow-hidden">
+                                                <div class="relative aspect-square">
+                                                    <?php the_post_thumbnail('medium', [
+                                                        'class' => 'w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-500'
+                                                    ]); ?>
                                                 </div>
                                             </div>
                                         <?php endif; ?>
-                                        
-                                        <div class="p-6 flex flex-col flex-grow">
-                                            <div class="mb-2">
-                                                <span class="text-xs font-bold text-green-600 uppercase tracking-wider bg-green-50 px-2 py-1 rounded">Relacionado</span>
-                                            </div>
-                                            <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors line-clamp-2">
+
+                                        <div class="relative p-6 flex flex-col flex-grow">
+                                            <h3 class="text-base font-bold text-gray-800 group-hover:text-green-700 transition-colors duration-300 mb-3 line-clamp-2">
                                                 <?php the_title(); ?>
                                             </h3>
-                                            <div class="mt-auto pt-4 flex items-center text-gray-500 text-sm font-medium group-hover:text-green-600 transition-colors">
-                                                Explorar producto
-                                                <i class='bx bx-chevron-right ml-1 text-lg group-hover:translate-x-1 transition-transform'></i>
-                                            </div>
+
+                                            <?php if (get_field('descripcion_corta')) : ?>
+                                                <p class="text-sm text-gray-600 mb-4 line-clamp-2 flex-grow">
+                                                    <?php echo get_field('descripcion_corta'); ?>
+                                                </p>
+                                            <?php endif; ?>
+
+                                            <a href="<?php echo esc_url($product_link); ?>"
+                                                class="group/btn relative w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-lg overflow-hidden text-sm mt-auto">
+
+                                                <div class="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent transform -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700"></div>
+
+                                                <span class="relative text-white">Ver detalles</span>
+
+                                                <svg class="w-4 h-4 ml-2 relative transform group-hover/btn:translate-x-1 transition-transform duration-300"
+                                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </a>
+                                        </div>
+
+                                        <div class="absolute top-0 right-0 w-20 h-20 overflow-hidden">
+                                            <div class="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-green-400/20 to-emerald-400/20 rounded-full"></div>
                                         </div>
                                     </div>
-                                </a>
+
+                                    <div class="absolute -inset-3 bg-gradient-to-r from-green-100 to-emerald-100 rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 -z-10"></div>
+                                </article>
                             <?php endwhile; ?>
                         </div>
                     </div>

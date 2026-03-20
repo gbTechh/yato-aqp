@@ -202,6 +202,10 @@ Text Domain: yato-tema
   text-decoration: none;
 }
 
+a:hover {
+  text-decoration: none !important;
+}
+
 .image-filter {
 filter: grayscale(69%) sepia(28%) saturate(162%) contrast(91%);
 -webkit-filter: grayscale(69%) sepia(28%) saturate(162%) contrast(91%);
