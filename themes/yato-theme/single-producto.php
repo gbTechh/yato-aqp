@@ -107,6 +107,7 @@ while (have_posts()) :
                                 <?php foreach ($product_fields['galeria_de_fotos'] as $index => $image) : ?>
                                     <img
                                         src="<?php echo esc_url($image['sizes']['medium']); ?>"
+                                        data-full="<?php echo esc_url($image['url']); ?>"
                                         alt="<?php echo esc_attr($image['alt']); ?>"
                                         class="js-item-gallery gallery-thumbnail aspect-square w-16 h-16 object-cover rounded-lg cursor-pointer bg-gray-50 p-1 <?php echo $index === 0 ? 'active' : ''; ?>">
                                 <?php endforeach; ?>
@@ -379,12 +380,16 @@ while (have_posts()) :
                     // Agregar clase active a la clickeada
                     ev.target.classList.add('active');
 
-                    const src = ev.target.src;
+                    const src = ev.target.dataset.full || ev.target.src;
                     const gallery = document.querySelector('.js-show-gallery img');
 
                     // Efecto de fade
                     gallery.style.opacity = '0.5';
                     setTimeout(() => {
+                        // Quitar srcset/sizes: si no, el navegador ignora el src
+                        // manual y sigue mostrando la imagen elegida por srcset.
+                        gallery.removeAttribute('srcset');
+                        gallery.removeAttribute('sizes');
                         gallery.src = src;
                         gallery.style.opacity = '1';
                     }, 150);
