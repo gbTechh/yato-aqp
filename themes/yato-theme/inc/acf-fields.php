@@ -51,6 +51,19 @@ if (!function_exists('get_product_categories_with_fields')) {
         
         $categories_data[] = $category_data;
       }
+
+      // Ordenar ascendente por el campo ACF "orden".
+      // Las categorías sin orden asignado quedan al final (orden alfabético entre ellas).
+      usort($categories_data, function ($a, $b) {
+        $orden_a = isset($a->orden) && $a->orden !== '' ? (int) $a->orden : PHP_INT_MAX;
+        $orden_b = isset($b->orden) && $b->orden !== '' ? (int) $b->orden : PHP_INT_MAX;
+
+        if ($orden_a === $orden_b) {
+          return strcasecmp($a->name, $b->name);
+        }
+
+        return $orden_a <=> $orden_b;
+      });
     }
 
     return $categories_data;

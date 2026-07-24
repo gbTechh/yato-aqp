@@ -94,9 +94,13 @@ while (have_posts()) :
             <div class="flex flex-col hd:flex-row gap-10 items-start">
                 <!-- Columna de imagen -->
                 <div class="w-full hd:w-[400px]">
-                    <div class="mb-6 border border-gray-200 rounded-xl p-8 bg-white shadow-sm js-show-gallery w-full aspect-square overflow-hidden flex items-center justify-center">
+                    <div class="mb-6 border border-gray-200 rounded-xl p-8 bg-white shadow-sm js-show-gallery w-full aspect-square overflow-hidden flex items-center justify-center cursor-zoom-in">
                         <?php if (has_post_thumbnail()) : ?>
-                            <?php the_post_thumbnail('large', ['class' => 'w-full h-auto max-h-full object-contain transition-opacity duration-300']); ?>
+                            <?php the_post_thumbnail('large', [
+                                'class' => 'w-full h-auto max-h-full object-contain transition-opacity duration-300',
+                                'id' => 'mainProductImage',
+                                'data-full' => esc_url($producto_imagen),
+                            ]); ?>
                         <?php endif; ?>
                     </div>
 
@@ -367,6 +371,17 @@ while (have_posts()) :
         </dialog>
     <?php endif; ?>
 
+    <!-- Modal para imagen ampliada -->
+    <dialog id="imageModal">
+        <div class="relative">
+            <img id="imageModalImg" src="" alt="" class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain">
+            <button onclick="document.getElementById('imageModal').close()"
+                class="absolute top-4 right-4 bg-white text-gray-900 w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors shadow-lg">
+                <span class="text-2xl leading-none">&times;</span>
+            </button>
+        </div>
+    </dialog>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Galería interactiva
@@ -391,8 +406,25 @@ while (have_posts()) :
                         gallery.removeAttribute('srcset');
                         gallery.removeAttribute('sizes');
                         gallery.src = src;
+                        gallery.dataset.full = src;
                         gallery.style.opacity = '1';
                     }, 150);
+                }
+
+                // Abrir modal con la imagen grande
+                if (ev.target && ev.target.id === 'mainProductImage') {
+                    const modalImg = document.getElementById('imageModalImg');
+                    modalImg.src = ev.target.dataset.full || ev.target.src;
+                    modalImg.alt = ev.target.alt;
+                    document.getElementById('imageModal').showModal();
+                }
+            });
+
+            // Cerrar el modal de imagen al hacer clic fuera de la imagen (backdrop)
+            const imageModal = document.getElementById('imageModal');
+            imageModal.addEventListener('click', (ev) => {
+                if (ev.target === imageModal) {
+                    imageModal.close();
                 }
             });
 
